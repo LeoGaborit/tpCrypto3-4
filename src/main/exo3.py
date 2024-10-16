@@ -19,7 +19,7 @@ le tag utilisé."""
 
 import hashlib
 
-def genererMDPtailleN(entree1: str, taille : int) -> str:
+def genererMDPcleMaitre(entree1: str, taille : int) -> str:
     """
     Génère un mot de passe de <taille> caractères à partir de deux entrées
     :param entree1: une chaine de caractères
@@ -76,4 +76,4 @@ def demanderNouveauMDP() -> str:
 
     return nouveauMDP
 
-print("Votre mot de passe est : " + genererMDPtailleN("iu?^qsfv:", 12)) # 8 caractères
+print("Votre mot de passe est : " + genererMDPcleMaitre("iu?^qsfv:", 12)) # 8 caractères
