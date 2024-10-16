@@ -10,22 +10,42 @@ d’essais les plus importants, ainsi qu’une liste de cas de tests, dans votre
 
 import hashlib
 
-def genererMDPtailleN(entree1: str, entree2: str, taille : int) -> str:
+def genererMDPtailleN(entree1: str, entree2: str, tailleMDP : int) -> str:
     """
     Génère un mot de passe de <taille> caractères à partir de deux entrées
     :param entree1: une chaine de caractères
     :param entree2: une chaine de caractères
-    :param taille: un entier entre 1 et 12
+    :param tailleMDP: un entier entre 1 et 12
     :return: un mot de passe de 8 caractères
     """
+
+    assert 1 < tailleMDP < 12, "La taille doit être comprise entre 1 et 12"
 
     chaineConcatenee : str
     chaineHashee : str
 
-    if taille < 1 or taille > 12:
-        raise ValueError("La taille doit être comprise entre 1 et 12")
+    chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    tailleASCII : int = len(chaineASCII)
+    tailleSHA512 : int = 128
+
+    chaineMDP : str = ""
+
+    i : int
+    tailleSouslistes : int
+    restants : int
 
     chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
-    chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
+    chaineHashee = hashlib.sha512(chaineConcatenee.encode('utf-8')).hexdigest() # Hash en hexadécimal
 
-    return chaineHashee[:taille] # Renvoi des <taille> premiers caractères du hash
+    tailleSouslistes = tailleSHA512 // tailleMDP
+
+    # Générer des sous-listes variables et créer le mot de passe
+    for i in range(tailleMDP):
+        chaineTemp = chaineHashee[i * tailleSouslistes : (i + 1) * tailleSouslistes]
+        chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII]
+
+    return chaineMDP # Renvoi des 8 premiers caractères du hash
+
+print(genererMDPtailleN("test", "test", 11)) # Doit renvoyer 12 caractères
+print(genererMDPtailleN("test", "test", 2)) # Doit renvoyer 1 caractère
+print(genererMDPtailleN("test", "test", 6)) # Doit renvoyer 6 caractères
