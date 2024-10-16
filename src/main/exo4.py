@@ -34,40 +34,115 @@ donne des collisions pour des mots de passe de taille N = 8, 10 et 12. Comparez 
 théorique de réussir, ainsi qu’à la probabilité de trouver le mot de passe maître (quia avait 10 caractères).
 Quelles sont vos conclusions par rapport à un design sécurisé et une utilisation correcte de votre
 générateur de mots de passe ?
-
-Chemin des dictionnaires :
-- Taille 1 : src/main/dictionnaireTaille1.txt
-- Taille 2 : src/main/dictionnaireTaille2.txt
-- Taille 3 : src/main/dictionnaireTaille3.txt
 """
 
-def charger_dictionnaire(chemin_fichier):
-    with open(chemin_fichier, 'r') as fichier:
-            return [ligne.strip() for ligne in fichier]
+import hashlib
+
+from exo2 import genererMDPtailleN
+from generateurDico import generer_dictionnaire
+
+pathDicoT1 = "src/main/dictionnaireTaille1.txt"
+pathDicoT2 = "src/main/dictionnaireTaille2.txt"
+pathDicoT3 = "src/main/dictionnaireTaille3.txt"
 
 
-def attaque_par_force_brute(dictionnaire, hash_cible, fonction_de_hashage):
+def chargerDictionnaire(cheminFichier):
+    """
+    Charge le dictionnaire à partir d'un fichier.
+
+    :param cheminFichier: Chemin du fichier dictionnaire.
+    :return: Liste de mots de passe.
+    """
+    with open(cheminFichier, 'r') as fichier:
+        return [ligne.strip() for ligne in fichier]
+
+
+def attaqueBruteForce(dictionnaire, hashCible):
+    """
+    Tente de trouver un mot de passe en utilisant une attaque par dictionnaire avec SHA-256.
+
+    :param dictionnaire: Liste des mots de passe potentiels.
+    :param hashCible: Le hash SHA-256 cible que nous essayons de casser.
+    :return: Le mot de passe correspondant si trouvé, sinon None.
+    """
     for mot in dictionnaire:
-        if fonction_de_hashage(mot) == hash_cible:
+        motHashe = hashlib.sha256(mot.encode()).hexdigest()
+        if motHashe == hashCible:
             return mot
     return None
 
 
-# Exemple d'utilisation
-dictionnaire = charger_dictionnaire('dictionnaire.txt')
+def genererTousLesDicos():
+    """
+    Génère et enregistre des dictionnaires de mots de passe de taille 1, 2 et 3.
+    """
+    generer_dictionnaire(1, pathDicoT1)
+    generer_dictionnaire(2, pathDicoT2)
+    generer_dictionnaire(3, pathDicoT3)
+
+# Exemple d'utilisation pour générer les dictionnaires
+genererTousLesDicos()
+
+# Charger les dictionnaires à partir des fichiers générés
+dictionnaireT1 = chargerDictionnaire(pathDicoT1)
+dictionnaireT2 = chargerDictionnaire(pathDicoT2)
+dictionnaireT3 = chargerDictionnaire(pathDicoT3)
 
 
-# Supposons que vous ayez une fonction qui hash un mot de passe maître
-def fonction_de_hashage(mot_de_passe):
-    import hashlib
-    return hashlib.sha256(mot_de_passe.encode()).hexdigest()
+# Supposons que vous ayez une fonction qui génère des mots de passe pour différents tags
+def generer_mot_de_passe(tag, mot_de_passe_maitre):
+    """
+    Générez un mot de passe pour un tag spécifique en utilisant un mot de passe maître.
+
+    :param tag: Le tag pour lequel générer le mot de passe.
+    :param mot_de_passe_maitre: Le mot de passe maître.
+    :return: Mot de passe généré.
+    """
+    return hashlib.sha256((tag + mot_de_passe_maitre).encode()).hexdigest()
 
 
-hash_cible = '5e884898da28047151d0e56f8dc6292773603d0d6aabbddad5e6f7e543661814'  # Ex. hash pour 'password'
+# Generer un hash cible pour un tag donné en utilisant un mot de passe maître
+mot_de_passe_maitre = 'Abc123!@#'  # Exemple de mot de passe maître de 10 caractères
+hash_cible_unilim = generer_mot_de_passe('Unilim', mot_de_passe_maitre)+'Unilim'
+hash_cible_amazon = generer_mot_de_passe('Amazon', mot_de_passe_maitre)
+hash_cible_netflix = generer_mot_de_passe('Netflix', mot_de_passe_maitre)
 
-resultat = attaque_par_force_brute(dictionnaire, hash_cible, fonction_de_hashage)
+# Attaque pour le tag Unilim
+resultat_unilim = attaqueBruteForce(dictionnaireT1, hash_cible_unilim)
 
-if resultat:
-    print(f"Mot de passe maître trouvé: {resultat}")
+if resultat_unilim:
+    print(f"Mot de passe maître trouvé pour Unilim: {resultat_unilim}")
 else:
-    print("Aucun mot de passe maître trouvé dans le dictionnaire.")
+    print("Aucun mot de passe maître trouvé pour Unilim dans le dictionnaire de taille 1.")
+
+
+# Attaque pour les tags Unilim, Amazon et Netflix ensemble
+def attaque_par_force_brute_multiple(dictionnaire, hash_cibles):
+    """
+    Tente de trouver un mot de passe en utilisant une attaque par dictionnaire avec SHA-256
+    pour plusieurs hashs cibles.
+
+    :param dictionnaire: Liste des mots de passe potentiels.
+    :param hash_cibles: Liste de hashs SHA-256 cibles que nous essayons de casser.
+    :return: Le mot de passe correspondant si trouvé, sinon None.
+    """
+    for mot in dictionnaire:
+        matched_all = all(
+            hashlib.sha256((tag + mot).encode()).hexdigest() == hash_cible for tag, hash_cible in hash_cibles)
+        if matched_all:
+            return mot
+    return None
+
+
+hash_cibles = [
+    ('Unilim', hash_cible_unilim),
+    ('Amazon', hash_cible_amazon),
+    ('Netflix', hash_cible_netflix)
+]
+
+resultat_multiple = attaque_par_force_brute_multiple(dictionnaireT1, hash_cibles)
+
+if resultat_multiple:
+    print(f"Mot de passe maître trouvé pour plusieurs tags: {resultat_multiple}")
+else:
+    print("Aucun mot de passe maître trouvé pour les tags dans le dictionnaire de taille 1.")
