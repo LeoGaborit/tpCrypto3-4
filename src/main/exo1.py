@@ -30,13 +30,27 @@ def genererMDP(entree1: str, entree2: str) -> str:
     Génère un mot de passe de 8 caractères à partir de deux entrées
     :param entree1: une chaine de caractères
     :param entree2: une chaine de caractères
-    :return: un mot de passe de 8 caractères
+    :return: un mot de passe hashé de 8 caractères
     """
 
     chaineConcatenee : str
     chaineHashee : str
 
-    chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
-    chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
+    chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    tailleASCII : int = len(chaineASCII)
 
-    return chaineHashee[:8] # Renvoi des 8 premiers caractères du hash
+    chaineMDP : str = ""
+
+    i : int = 0
+
+    chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
+    chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash en hexadécimal
+
+    # On fait 8 listes de 8 caractères hashés
+    for i in range(8):
+        chaineTemp = chaineHashee[i*8:(i+1)*8] # On prend 8 caractères du hash
+        chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII] # On convertit l'hexa en entier et on prend le modulo
+
+    return chaineMDP # Renvoi des 8 premiers caractères du hash
+
+print(genererMDP("test", "test")) # Doit renvoyer 8 caractères
