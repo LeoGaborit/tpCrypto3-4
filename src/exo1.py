@@ -20,12 +20,10 @@ Détaillez ces étapes dans votre rapport
 Particularités : Évaluez d’une façon convaincante votre programme, à la fois en termes du respect de la
 consigne (est-ce que l’output est vraiment la bonne sortie de la fonction de hachage et à la bonne taille ?)
 et en termes de la robustesse des mots de passe par rapport aux entrées (distributions des outputs).
-Décrivez vos tests et résultats d’une façon à la   fois lisible et succincte dans le rapport.
+Décrivez vos tests et résultats d’une façon à la fois lisible et succincte dans le rapport.
 """
 
 import hashlib
-import string
-import random
 
 def genererMDP(entree1: str, entree2: str) -> str:
     """
@@ -35,22 +33,13 @@ def genererMDP(entree1: str, entree2: str) -> str:
     :return: un mot de passe de 8 caractères
     """
 
-    # TODO : Refaire le fichier
-
-    # Initialisation
     chaineConcatenee : str
-    mdp : str
-
-    i : int
+    chaineHashee : str
 
     chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
+    chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
 
-    hash = hashlib.sha256(chaineConcatenee.encode()).hexdigest() # Hash la chaine concaténée
+    return chaineHashee[:8] # Renvoi des 8 premiers caractères du hash
 
-    # Génère un mot de passe de 8 caractères
-    mdp = ""
-    for i in range(8):
-        mdp += random.choice(string.ascii_letters + string.digits + string.punctuation)
-    return mdp
-
+# Test
 print(genererMDP("hello", "world"))
