@@ -40,6 +40,3 @@ def genererMDP(entree1: str, entree2: str) -> str:
     chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
 
     return chaineHashee[:8] # Renvoi des 8 premiers caractères du hash
-
-# Test
-print(genererMDP("hello", "world"))

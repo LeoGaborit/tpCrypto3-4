@@ -29,6 +29,3 @@ def genererMDPtailleN(entree1: str, entree2: str, taille : int) -> str:
     chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
 
     return chaineHashee[:taille] # Renvoi des <taille> premiers caractères du hash
-
-# Test
-
