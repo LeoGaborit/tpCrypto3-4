@@ -1,0 +1,8 @@
+/src/main/dictionnaireTaille1.txt
+/src/main/dictionnaireTaille2.txt
+/src/main/dictionnaireTaille3.txt
+
+/.idea/*
+!/.idea/inspectionProfiles/*
+
+/target/
