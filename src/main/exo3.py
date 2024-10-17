@@ -75,7 +75,7 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     return chaineMDP  # Renvoi des 8 premiers caractères du hash
 
 
-def lireMPWD() -> Type[FileNotFoundError] | str:
+def lireMPWD() -> str:
     """
     Lit le mot de passe maître stocké dans le fichier mpwd.txt
     :return: le mot de passe maître
@@ -84,7 +84,7 @@ def lireMPWD() -> Type[FileNotFoundError] | str:
         with open("mpAd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
-        return FileNotFoundError
+        return "FileNotFoundError"
 
 
 def demanderNouveauMDP() -> str:
