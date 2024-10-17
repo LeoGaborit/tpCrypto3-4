@@ -52,6 +52,8 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
     chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
     tailleASCII : int = len(chaineASCII)
 
+    collisions : str = ""
+
     if taille == 1:
         for i in range(tailleASCII):
             mot = chaineASCII[i]
@@ -60,8 +62,11 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
             if motHashe == hashCible and cleMaitre == mot:
                 tempsFin : float = time.time()
                 tempsTotal = tempsFin - tempsDebut
-                print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} est le même que la cléMaitre {cleMaitre} en {round(tempsTotal, 6)} secondes")
+                print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} en {round(tempsTotal, 6)} secondes")
+                print(f"Collisions trouvées : {collisions}")
                 return True
+            elif motHashe == hashCible and cleMaitre != mot:
+                collisions = collisions + "| cleMaitre : " + mot + " - hash : " + motHashe
 
     elif taille == 2:
         for i in range(tailleASCII):
@@ -72,8 +77,11 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
                 if motHashe == hashCible and cleMaitre == mot:
                     tempsFin : float = time.time()
                     tempsTotal = tempsFin - tempsDebut
-                    print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} est le même que la cléMaitre {cleMaitre} en {round(tempsTotal, 6)} secondes")
+                    print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} en {round(tempsTotal, 6)} secondes")
+                    print(f"Collisions trouvées : {collisions}")
                     return True
+                elif motHashe == hashCible and cleMaitre != mot:
+                    collisions = collisions + "| cleMaitre : " + mot + " - hash : " + motHashe
 
     elif taille == 3:
         for i in range(tailleASCII):
@@ -85,8 +93,11 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
                     if motHashe == hashCible and cleMaitre == mot:
                         tempsFin : float = time.time()
                         tempsTotal = tempsFin - tempsDebut
-                        print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} est le même que la cléMaitre {cleMaitre} en {round(tempsTotal, 6)} secondes")
+                        print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} en {round(tempsTotal, 6)} secondes")
+                        print(f"Collisions trouvées : {collisions}")
                         return True
+                    elif motHashe == hashCible and cleMaitre != mot:
+                        collisions = collisions + " | cleMaitre : " + mot + " - hash : " + motHashe
 
     else:
         print("Taille non supportée (1,2,3)")
@@ -95,7 +106,7 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
     return False
 
 # Generer un hash cible pour un tag donné en utilisant un mot de passe maître
-cleMaitre = 'X@*'
+cleMaitre = 'X*$y' # MAX 3 CARACTERES (1,2,3)
 tailleCle = len(cleMaitre)
 
 mdpCibleUnilim = genererMDPtailleN('Unilim', cleMaitre, tailleCle)

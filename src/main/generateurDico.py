@@ -28,7 +28,3 @@ def generer_dictionnaire(taille_mot_de_passe, nom_fichier):
     print(f"Le fichier {nom_fichier} a été généré avec succès.")
 
 
-# Exemple d'utilisation
-generer_dictionnaire(1, 'dictionnaireTaille1.txt')  # Génère tous les mots de passe de longueur 1
-generer_dictionnaire(2, 'dictionnaireTaille2.txt')  # Génère tous les mots de passe de longueur 2
-generer_dictionnaire(3, 'dictionnaireTaille3.txt')  # Génère tous les mots de passe de longueur 3
