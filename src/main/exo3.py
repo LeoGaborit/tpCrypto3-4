@@ -18,6 +18,8 @@ par exemple stocker la correspondance entre l’URL ou le service pour lequel on
 le tag utilisé."""
 
 import hashlib
+from typing import Type
+
 
 def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     """
@@ -73,16 +75,16 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     return chaineMDP  # Renvoi des 8 premiers caractères du hash
 
 
-def lireMPWD() -> str:
+def lireMPWD() -> Type[FileNotFoundError] | str:
     """
     Lit le mot de passe maître stocké dans le fichier mpwd.txt
     :return: le mot de passe maître
     """
     try :
-        with open("mpwd.txt", "r") as file:
+        with open("mpAd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
-        return "FileNotFoundError"
+        return FileNotFoundError
 
 
 def demanderNouveauMDP() -> str:
