@@ -26,7 +26,7 @@ def genererMDPtailleN(entree1: str, entree2: str, tailleMDP : int) -> str:
 
     chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
     tailleASCII : int = len(chaineASCII)
-    tailleSHA512 : int = 128
+    tailleSHA256 : int = 64
 
     chaineMDP : str = ""
 
@@ -37,7 +37,7 @@ def genererMDPtailleN(entree1: str, entree2: str, tailleMDP : int) -> str:
     chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
     chaineHashee = hashlib.sha512(chaineConcatenee.encode('utf-8')).hexdigest() # Hash en hexadécimal
 
-    tailleSouslistes = tailleSHA512 // tailleMDP
+    tailleSouslistes = tailleSHA256 // tailleMDP
 
     # Générer des sous-listes variables et créer le mot de passe
     for i in range(tailleMDP):
@@ -45,7 +45,3 @@ def genererMDPtailleN(entree1: str, entree2: str, tailleMDP : int) -> str:
         chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII]
 
     return chaineMDP # Renvoi des 8 premiers caractères du hash
-
-print(genererMDPtailleN("test", "test", 11)) # Doit renvoyer 12 caractères
-print(genererMDPtailleN("test", "test", 2)) # Doit renvoyer 1 caractère
-print(genererMDPtailleN("test", "test", 6)) # Doit renvoyer 6 caractères

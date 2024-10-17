@@ -105,6 +105,76 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
     print("\nHashCible non trouvé")
     return False
 
+
+def trouverCollisions():
+    """
+    Trouve des collisions entre les tags
+    - Unilim
+    - Amazon
+    - Netflix
+    """
+
+    print("\nDébut de la recherche de collisions\n")
+
+    chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    tailleASCII : int = len(chaineASCII)
+
+    tentatives : int = 0
+
+    tempsDebut : float = time.time()
+
+    print("Recherche de collisions pour taille 1\n")
+    for i in range(tailleASCII):
+        tentatives += 1
+        cleMaitre = chaineASCII[i]
+        motHasheUnilim = genererMDPtailleN('Unilim', cleMaitre, 1)
+        motHasheAmazon = genererMDPtailleN('Amazon', cleMaitre, 1)
+        motHasheNetflix = genererMDPtailleN('Netflix', cleMaitre, 1)
+        if motHasheUnilim == motHasheAmazon and motHasheAmazon == motHasheNetflix and motHasheNetflix == motHasheUnilim:
+            print(f"Collision trouvée pour le mot {cleMaitre} : {motHasheUnilim} - {motHasheAmazon} - {motHasheNetflix}")
+
+    print("\nRecherche de collisions pour taille 2\n")
+    for i in range(tailleASCII):
+        for j in range(tailleASCII):
+            tentatives += 1
+            cleMaitre = chaineASCII[i] + chaineASCII[j]
+            motHasheUnilim = genererMDPtailleN('Unilim', cleMaitre, 2)
+            motHasheAmazon = genererMDPtailleN('Amazon', cleMaitre, 2)
+            motHasheNetflix = genererMDPtailleN('Netflix', cleMaitre, 2)
+            if motHasheUnilim == motHasheAmazon and motHasheAmazon == motHasheNetflix and motHasheNetflix == motHasheUnilim:
+                print(f"Collision trouvée pour le mot {cleMaitre} : {motHasheUnilim} - {motHasheAmazon} - {motHasheNetflix}")
+
+    print("\nRecherche de collisions pour taille 3\n")
+    for i in range(tailleASCII):
+        for j in range(tailleASCII):
+            for k in range(tailleASCII):
+                tentatives += 1
+                cleMaitre = chaineASCII[i] + chaineASCII[j] + chaineASCII[k]
+                motHasheUnilim = genererMDPtailleN('Unilim', cleMaitre, 3)
+                motHasheAmazon = genererMDPtailleN('Amazon', cleMaitre, 3)
+                motHasheNetflix = genererMDPtailleN('Netflix', cleMaitre, 3)
+                if motHasheUnilim == motHasheAmazon and motHasheAmazon == motHasheNetflix and motHasheNetflix == motHasheUnilim:
+                    print(f"Collision trouvée pour le mot {cleMaitre} : {motHasheUnilim} - {motHasheAmazon} - {motHasheNetflix}")
+
+    print(f"\nRecherche de collisions pour taille 4\n")
+    for i in range(tailleASCII):
+        for j in range(tailleASCII):
+            for k in range(tailleASCII):
+                for l in range(tailleASCII):
+                    tentatives += 1
+                    cleMaitre = chaineASCII[i] + chaineASCII[j] + chaineASCII[k] + chaineASCII[l]
+                    motHasheUnilim = genererMDPtailleN('Unilim', cleMaitre, 4)
+                    motHasheAmazon = genererMDPtailleN('Amazon', cleMaitre, 4)
+                    motHasheNetflix = genererMDPtailleN('Netflix', cleMaitre, 4)
+                    if motHasheUnilim == motHasheAmazon and motHasheAmazon == motHasheNetflix and motHasheNetflix == motHasheUnilim:
+                        print(f"Collision trouvée pour le mot {cleMaitre} : {motHasheUnilim} - {motHasheAmazon} - {motHasheNetflix}")
+
+    tempsFin : float = time.time()
+    tempsTotal = tempsFin - tempsDebut
+    print(f"\nNombre total de tentatives : {tentatives} en {round(tempsTotal, 6)} secondes")
+    print("\nFin de la recherche de collisions\n")
+
+
 # Generer un hash cible pour un tag donné en utilisant un mot de passe maître
 cleMaitre = 'X*$y' # MAX 3 CARACTERES (1,2,3)
 tailleCle = len(cleMaitre)
@@ -114,4 +184,7 @@ mdpCibleAmazon = genererMDPtailleN('Amazon', cleMaitre, tailleCle)
 mdpCibleNetflix = genererMDPtailleN('Netflix', cleMaitre, tailleCle)
 
 # Attaque pour le tag Unilim
-resultatUnilim = boucleAttaqueBF(tailleCle, 'Unilim', mdpCibleUnilim, cleMaitre)
+#resultatUnilim = boucleAttaqueBF(tailleCle, 'Unilim', mdpCibleUnilim, cleMaitre)
+
+# Fonction qui trouve des collisions entre les tags
+trouverCollisions()
