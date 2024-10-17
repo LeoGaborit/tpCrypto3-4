@@ -18,10 +18,9 @@ par exemple stocker la correspondance entre l’URL ou le service pour lequel on
 le tag utilisé."""
 
 import hashlib
-from typing import Type
 
 
-def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
+def genererMDPcleMaitre(entree: str, tailleMDP: int) -> str:
     """
     Génère un mot de passe de <taille> caractères à partir de deux entrées
     :param entree: une chaine de caractères
@@ -29,7 +28,7 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     :return: un mot de passe de 8 caractères
     """
 
-    assert 1 < tailleMDP < 12, "La taille doit être comprise entre 1 et 12"
+    assert 1 <= tailleMDP <= 12, "La taille doit être comprise entre 1 et 12"
 
     chaineConcatenee: str
     chaineHashee: str
@@ -46,9 +45,7 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     tailleSouslistes: int
     restants: int
 
-
     cleMaitre = lireMPWD()
-    print(cleMaitre)
 
     if tailleMDP < 1 or tailleMDP > 12:
         raise ValueError("La taille doit être comprise entre 1 et 12")
@@ -56,7 +53,7 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     if cleMaitre == "":
         cleMaitre = demanderNouveauMDP()
 
-    choix=str(input("Voulez-vous changer de mot de passe maître ? (O/N)"))
+    choix=str(input("Voulez-vous changer de mot de passe maître ? (O/N) : "))
     if choix == "O":
         cleMaitre = demanderNouveauMDP()
     else :
@@ -72,7 +69,7 @@ def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
         chaineTemp = chaineHashee[i * tailleSouslistes: (i + 1) * tailleSouslistes]
         chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII]
 
-    return chaineMDP  # Renvoi des 8 premiers caractères du hash
+    return chaineMDP
 
 
 def lireMPWD() -> str:
@@ -81,7 +78,7 @@ def lireMPWD() -> str:
     :return: le mot de passe maître
     """
     try :
-        with open("mpAd.txt", "r") as file:
+        with open("mpwd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
         return "FileNotFoundError"
@@ -94,5 +91,3 @@ def demanderNouveauMDP() -> str:
     nouveauMDP : str
     nouveauMDP = input("Veuillez rentrer un nouveau mot de passe maître, il ne doit pas contenir d'espaces : ")
     return nouveauMDP
-
-print("Votre mot de passe est : " + genererMDPtailleN ("piuuhpvk:", 11)) # 8 caractères

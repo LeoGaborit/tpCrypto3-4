@@ -19,7 +19,7 @@ def genererMDPtailleN(entree1: str, entree2: str, tailleMDP : int) -> str:
     :return: un mot de passe de 8 caractères
     """
 
-    assert 1 < tailleMDP < 12, "La taille doit être comprise entre 1 et 12"
+    assert 1 <= tailleMDP <= 12, "La taille doit être comprise entre 1 et 12"
 
     chaineConcatenee : str
     chaineHashee : str
