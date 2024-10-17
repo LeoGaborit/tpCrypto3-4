@@ -19,39 +19,58 @@ le tag utilisé."""
 
 import hashlib
 
-def genererMDPcleMaitre(entree1: str, taille : int) -> str:
+def genererMDPtailleN(entree1: str, tailleMDP: int) -> str:
     """
     Génère un mot de passe de <taille> caractères à partir de deux entrées
     :param entree1: une chaine de caractères
-    :param entree2: une chaine de caractères
-    :param taille: un entier entre 1 et 12
+    :param tailleMDP: un entier entre 1 et 12
     :return: un mot de passe de 8 caractères
     """
 
-    chaineConcatenee : str
-    chaineHashee : str
-    entree2 : str
+    assert 1 < tailleMDP < 12, "La taille doit être comprise entre 1 et 12"
+
+    chaineConcatenee: str
+    chaineHashee: str
+    mdpMaitre : str
     choix : str
 
-    entree2 = lireMPWD()
-    print(entree2)
+    chaineASCII: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    tailleASCII: int = len(chaineASCII)
+    tailleSHA512: int = 128
 
-    if taille < 1 or taille > 12:
+    chaineMDP: str = ""
+
+    i: int
+    tailleSouslistes: int
+    restants: int
+
+
+    mdpMaitre = lireMPWD()
+    print(mdpMaitre)
+
+    if tailleMDP < 1 or tailleMDP > 12:
         raise ValueError("La taille doit être comprise entre 1 et 12")
 
-    if entree2 == "":
-        entree2 = demanderNouveauMDP()
+    if mdpMaitre == "":
+        mdpMaitre = demanderNouveauMDP()
 
     choix=str(input("Voulez-vous changer de mot de passe maître ? (O/N)"))
     if choix == "O":
-        entree2 = demanderNouveauMDP()
+        mdpMaitre = demanderNouveauMDP()
     else :
         pass
 
-    chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
-    chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash
+    chaineConcatenee = entree1 + mdpMaitre  # Concatène les deux entrées
+    chaineHashee = hashlib.sha512(chaineConcatenee.encode('utf-8')).hexdigest()  # Hash en hexadécimal
 
-    return chaineHashee[:taille] # Renvoi des <taille> premiers caractères du hash
+    tailleSouslistes = tailleSHA512 // tailleMDP
+
+    # Générer des sous-listes variables et créer le mot de passe
+    for i in range(tailleMDP):
+        chaineTemp = chaineHashee[i * tailleSouslistes: (i + 1) * tailleSouslistes]
+        chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII]
+
+    return chaineMDP  # Renvoi des 8 premiers caractères du hash
 
 def lireMPWD() -> str:
     """
@@ -60,7 +79,7 @@ def lireMPWD() -> str:
     """
 
     try :
-        with open("mpAd.txt", "r") as file:
+        with open("mpwd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
         return ""
@@ -76,4 +95,4 @@ def demanderNouveauMDP() -> str:
 
     return nouveauMDP
 
-print("Votre mot de passe est : " + genererMDPcleMaitre("iu?^qsfv:", 12)) # 8 caractères
+print("Votre mot de passe est : " + genererMDPtailleN ("piuuhpvk:", 11)) # 8 caractères
