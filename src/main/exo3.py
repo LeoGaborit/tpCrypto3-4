@@ -19,10 +19,10 @@ le tag utilisé."""
 
 import hashlib
 
-def genererMDPtailleN(entree1: str, tailleMDP: int) -> str:
+def genererMDPtailleN(entree: str, tailleMDP: int) -> str:
     """
     Génère un mot de passe de <taille> caractères à partir de deux entrées
-    :param entree1: une chaine de caractères
+    :param entree: une chaine de caractères
     :param tailleMDP: un entier entre 1 et 12
     :return: un mot de passe de 8 caractères
     """
@@ -31,7 +31,7 @@ def genererMDPtailleN(entree1: str, tailleMDP: int) -> str:
 
     chaineConcatenee: str
     chaineHashee: str
-    mdpMaitre : str
+    cleMaitre : str
     choix : str
 
     chaineASCII: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
@@ -45,22 +45,22 @@ def genererMDPtailleN(entree1: str, tailleMDP: int) -> str:
     restants: int
 
 
-    mdpMaitre = lireMPWD()
-    print(mdpMaitre)
+    cleMaitre = lireMPWD()
+    print(cleMaitre)
 
     if tailleMDP < 1 or tailleMDP > 12:
         raise ValueError("La taille doit être comprise entre 1 et 12")
 
-    if mdpMaitre == "":
-        mdpMaitre = demanderNouveauMDP()
+    if cleMaitre == "":
+        cleMaitre = demanderNouveauMDP()
 
     choix=str(input("Voulez-vous changer de mot de passe maître ? (O/N)"))
     if choix == "O":
-        mdpMaitre = demanderNouveauMDP()
+        cleMaitre = demanderNouveauMDP()
     else :
         pass
 
-    chaineConcatenee = entree1 + mdpMaitre  # Concatène les deux entrées
+    chaineConcatenee = entree + cleMaitre  # Concatène les deux entrées
     chaineHashee = hashlib.sha512(chaineConcatenee.encode('utf-8')).hexdigest()  # Hash en hexadécimal
 
     tailleSouslistes = tailleSHA512 // tailleMDP
@@ -72,17 +72,17 @@ def genererMDPtailleN(entree1: str, tailleMDP: int) -> str:
 
     return chaineMDP  # Renvoi des 8 premiers caractères du hash
 
+
 def lireMPWD() -> str:
     """
     Lit le mot de passe maître stocké dans le fichier mpwd.txt
     :return: le mot de passe maître
     """
-
     try :
         with open("mpwd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
-        return ""
+        return "FileNotFoundError"
 
 
 def demanderNouveauMDP() -> str:
@@ -90,9 +90,7 @@ def demanderNouveauMDP() -> str:
     Demande à l'utilisateur de rentrer un nouveau mot de passe maître
     """
     nouveauMDP : str
-
     nouveauMDP = input("Veuillez rentrer un nouveau mot de passe maître, il ne doit pas contenir d'espaces : ")
-
     return nouveauMDP
 
 print("Votre mot de passe est : " + genererMDPtailleN ("piuuhpvk:", 11)) # 8 caractères
