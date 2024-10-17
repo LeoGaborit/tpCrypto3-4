@@ -88,26 +88,14 @@ def boucleAttaqueBF(taille : int, tag : str, hashCible : str, cleMaitre : str) -
                         print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} est le même que la cléMaitre {cleMaitre} en {round(tempsTotal, 6)} secondes")
                         return True
 
-    elif taille == 5:
-        for i in range(tailleASCII):
-            for j in range(tailleASCII):
-                for k in range(tailleASCII):
-                    for l in range(tailleASCII):
-                        for m in range(tailleASCII):
-                            mot = chaineASCII[i] + chaineASCII[j] + chaineASCII[k] + chaineASCII[l] + chaineASCII[m]
-                            motHashe = genererMDPtailleN(tag, mot, taille)
-                            print(mot, motHashe, hashCible)
-                            if motHashe == hashCible and cleMaitre == mot:
-                                tempsFin : float = time.time()
-                                tempsTotal = tempsFin - tempsDebut
-                                print(f"HashCible trouvé : {motHashe} avec le tag {tag} et le mot {mot} est le même que la cléMaitre {cleMaitre} en {round(tempsTotal, 6)} secondes")
-                                return True
+    else:
+        print("Taille non supportée (1,2,3)")
 
     print("\nHashCible non trouvé")
     return False
 
 # Generer un hash cible pour un tag donné en utilisant un mot de passe maître
-cleMaitre = '12345'
+cleMaitre = 'X@*'
 tailleCle = len(cleMaitre)
 
 mdpCibleUnilim = genererMDPtailleN('Unilim', cleMaitre, tailleCle)
