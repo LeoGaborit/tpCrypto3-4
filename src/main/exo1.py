@@ -25,7 +25,7 @@ Décrivez vos tests et résultats d’une façon à la fois lisible et succincte
 
 import hashlib
 
-def genererMDP(entree1: str, entree2: str) -> str:
+def genererMDP(entree1: str, entree2: str) -> str | int:
     """
     Génère un mot de passe de 8 caractères à partir de deux entrées
     :param entree1: une chaine de caractères
@@ -47,6 +47,7 @@ def genererMDP(entree1: str, entree2: str) -> str:
     i : int
 
     chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
+
     chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash en hexadécimal
 
     # On fait 8 listes de 8 caractères hashés
