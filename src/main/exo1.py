@@ -36,21 +36,22 @@ def genererMDP(entree1: str, entree2: str) -> str:
     chaineConcatenee : str
     chaineHashee : str
 
-    chaineASCII : str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
+    chaineASCII : str = ("abcdefghijklmnopqrstuvwxy"
+                         "zABCDEFGHIJKLMNOPQRSTUVWX"
+                         "YZ0123456789!@#$%^&*()_+")
+
     tailleASCII : int = len(chaineASCII)
 
     chaineMDP : str = ""
 
-    i : int = 0
+    i : int
 
     chaineConcatenee = entree1 + entree2    # Concatène les deux entrées
     chaineHashee = hashlib.sha256(chaineConcatenee.encode('utf-8')).hexdigest() # Hash en hexadécimal
 
     # On fait 8 listes de 8 caractères hashés
     for i in range(8):
-        chaineTemp = chaineHashee[i*8:(i+1)*8] # On prend 8 caractères du hash
-        chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII] # On convertit l'hexa en entier et on prend le modulo
+        chaineTemp = chaineHashee[i*8:(i+1)*8]
+        chaineMDP += chaineASCII[int(chaineTemp, 16) % tailleASCII]
 
     return chaineMDP # Renvoi des 8 premiers caractères du hash
-
-print(genererMDP("test", "test")) # Doit renvoyer 8 caractères
