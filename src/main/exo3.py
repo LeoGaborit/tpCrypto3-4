@@ -81,7 +81,7 @@ def lireMPWD() -> str:
         with open("mpwd.txt", "r") as file:
             return file.read()
     except FileNotFoundError:
-        return "FileNotFoundError"
+        return "" # Si le fichier n'existe pas, retourne une chaine vide, pour que le programme demande un nouveau mot de passe
 
 
 def demanderNouveauMDP() -> str:
@@ -91,3 +91,4 @@ def demanderNouveauMDP() -> str:
     nouveauMDP : str
     nouveauMDP = input("Veuillez rentrer un nouveau mot de passe maître, il ne doit pas contenir d'espaces : ")
     return nouveauMDP
+
