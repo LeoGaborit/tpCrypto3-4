@@ -5,7 +5,7 @@ Tests pour la fonction genererMDP de l'exercice 1
 Chemin vers le script principal : src/main/exo1.py
 """
 
-from ..main.exo1 import genererMDP
+from src.main.exo1 import genererMDP
 
 print(genererMDP("hello", "world")) # 8 caractères
 assert len(genererMDP("hello", "world")) == 8

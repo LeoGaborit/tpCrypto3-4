@@ -5,7 +5,7 @@ Tests pour la fonction genererMDPtailleN de l'exercice 2
 Chemin vers le script principal : src/main/exo2.py
 """
 
-from ..main.exo2 import genererMDPtailleN
+from src.main.exo2 import genererMDPtailleN
 
 print(genererMDPtailleN("hello", "world", 12)) # 12 caractères
 assert len(genererMDPtailleN("hello", "world", 12)) == 12

@@ -7,8 +7,7 @@ Chemin vers le script principal : src/main/exo3.py
 
 #Création des tests
 
-from ..main.exo3 import genererMDPcleMaitre, lireMPWD, demanderNouveauMDP
-import hashlib
+from src.main.exo3 import genererMDPcleMaitre
 
 def test_genererMDPtailleN():
     #Test avec une taille de 1
